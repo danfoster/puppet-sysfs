@@ -36,7 +36,8 @@ class sysfs {
   }
 
   service { 'sysfsutils':
-    ensure => running,
+    ensure    => running,
+    enable    => true,
     subscribe => File["/etc/sysfs.conf"]
   }
 
@@ -44,6 +45,7 @@ class sysfs {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
+    force   => true,
     require => Package["sysfsutils"];
   }
 
