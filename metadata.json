@@ -1,0 +1,14 @@
+{
+  "name": "danfoster-sysfs",
+  "version": "0.1.0",
+  "author": "danfoster",
+  "summary": "A module for managing sysfs settings",
+  "license": "Apache 2.0",
+  "source": "https://github.com/danfoster/puppet-sysfs",
+  "project_page": "https://github.com/danfoster/puppet-sysfs",
+  "issues_url": "https://github.com/danfoster/puppet-sysfs/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
+
