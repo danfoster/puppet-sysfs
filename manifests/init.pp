@@ -23,6 +23,13 @@ class sysfs (
   }
 
   if ($osfamily == "RedHat") and ($operatingsystemmajrelease == "7")  {
+    file { '/usr/local/bin/sysfs-reload' :
+      source => 'puppet:///modules/sysfs/sysfs-reload',
+      owner  => root,
+      group  => root,
+      mode   => '0700',
+      before => File["/etc/systemd/system/sysfsutils.service"]
+    }
     file { '/etc/systemd/system/sysfsutils.service' :
       source => 'puppet:///modules/sysfs/sysfsutils.service',
       owner  => root,
