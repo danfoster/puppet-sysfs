@@ -1,41 +1,50 @@
 # == Class: sysfs
 #
-# Full description of class sysfs here.
-#
-# === Parameters
-#
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
+# A module for managing sysfs settings.
 #
 # === Examples
 #
 #  class { 'sysfs':
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
 #  }
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Dan Foster <dan@zem.org.uk>
 #
 # === Copyright
 #
-# Copyright 2015 Your name here, unless otherwise noted.
+# Copyright 2015 Dan Foster, unless otherwise noted.
 #
 class sysfs {
+  package { 'sysfsutils':
+    ensure => installed
+  }
 
+  if ($osfamily == "RedHat") and ($operatingsystemmajrelease == "7")  {
+    file { '/etc/systemd/system/sysfsutils.service' :
+      source => 'puppet:///modules/sysfs/sysfsutils.service',
+      owner  => root,
+      group  => root,
+      mode   => '0700',
+      before => Service["sysfsutils"]
+    }
+    exec { 'sysfsutils_reload_rhel':
+      command => '/usr/bin/awk -F= \'/(\S+)\s*=(\S+)/{cmd=sprintf("/bin/echo %s > /sys/%s",$2, $1); system(cmd)}\' /etc/sysfs.conf',
+      refreshonly => true,
+      subscribe => File['/etc/sysfs.conf'];
+    } 
+  }
+
+  service { 'sysfsutils':
+    ensure => running,
+    subscribe => File["/etc/sysfs.conf"]
+  }
+
+  concat { "/etc/sysfs.conf":
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => Package["sysfsutils"];
+  }
 
 }
