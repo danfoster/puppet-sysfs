@@ -40,14 +40,14 @@ class sysfs (
     exec { 'sysfsutils_reload_rhel':
       command => '/usr/bin/awk -F= \'/(\S+)\s*=(\S+)/{cmd=sprintf("/bin/echo %s > /sys/%s",$2, $1); system(cmd)}\' /etc/sysfs.conf',
       refreshonly => true,
-      subscribe => File['/etc/sysfs.conf'];
+      subscribe => Concat['/etc/sysfs.conf'];
     } 
   }
 
   service { 'sysfsutils':
     ensure    => running,
     enable    => true,
-    subscribe => File["/etc/sysfs.conf"]
+    subscribe => Concat["/etc/sysfs.conf"]
   }
 
   concat { "/etc/sysfs.conf":
