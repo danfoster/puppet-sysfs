@@ -1,6 +1,6 @@
 {
   "name": "danfoster-sysfs",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "danfoster",
   "summary": "A module for managing sysfs settings",
   "license": "Apache 2.0",
