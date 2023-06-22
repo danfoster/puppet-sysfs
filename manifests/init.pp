@@ -16,7 +16,7 @@
 # Copyright 2015 Dan Foster, unless otherwise noted.
 #
 class sysfs (
-  $settings  = undef
+  Optional[Hash] $settings = undef
 ) {
   package { 'sysfsutils':
     ensure => installed
@@ -58,7 +58,7 @@ class sysfs (
     require => Package['sysfsutils'],
   }
 
-  if is_hash($settings) {
+  if $settings {
     create_resources('sysfs::setting', $settings)
   }
 
