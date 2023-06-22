@@ -22,7 +22,7 @@ class sysfs (
     ensure => installed
   }
 
-  if ($::osfamily == 'RedHat') and (versioncmp($::facts['os']['release']['full'], '7') >= 0) {
+  if ($facts['os']['family'] == 'RedHat') and (versioncmp($facts['os']['release']['full'], '7') >= 0) {
     file { '/usr/local/bin/sysfs-reload' :
       source => 'puppet:///modules/sysfs/sysfs-reload',
       owner  => root,
