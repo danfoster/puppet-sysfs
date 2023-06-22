@@ -33,5 +33,5 @@ sysfs::settings:
 
 ## Development
 
-Pull requests greafully recieved.
+Pull requests gratefully recieved.
 
