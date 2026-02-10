@@ -12,11 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.2"
-
       - name: Extract version from tag
         id: version
         run: |
@@ -28,16 +23,10 @@ jobs:
           jq --arg v "${{ steps.version.outputs.version }}" '.version = $v' metadata.json > metadata.tmp
           mv metadata.tmp metadata.json
 
-      - name: Build module
-        run: |
-          gem install puppet
-          puppet module build
-
-      - name: Publish to Puppet Forge
-        uses: barnumbirr/action-forge-publish@v1.1.1
-        with:
-          forge_token: ${{ secrets.PUPPET_FORGE_TOKEN }}
-          module_path: pkg/danfoster-sysfs-${{ steps.version.outputs.version }}.tar.gz
+      - name: Build and publish to Puppet Forge
+        uses: barnumbirr/action-forge-publish@v2.15.0
+        env:
+          FORGE_API_KEY: ${{ secrets.PUPPET_FORGE_TOKEN }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
