@@ -21,6 +21,7 @@ jobs:
 
     env:
       PUPPET_VERSION: ${{ matrix.puppet }}
+      CONCAT_VERSION: ${{ matrix.concat }}
 
     name: "Ruby ${{ matrix.ruby }} / Puppet ${{ matrix.puppet }} / Concat ${{ matrix.concat }}"
 
@@ -34,7 +35,7 @@ jobs:
           bundler-cache: true
 
       - name: Set concat version
-        run: sed -i 's/ref: v9.0.2/ref: ${{ matrix.concat }}/' .fixtures.yml
+        run: sed -i "s/ref: v9.0.2/ref: $CONCAT_VERSION/" .fixtures.yml
 
       - name: Run tests
         run: bundle exec rake spec
