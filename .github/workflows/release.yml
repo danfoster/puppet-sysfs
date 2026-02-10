@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+*"
+      - "[0-9]+.[0-9]+.[0-9]+*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Update metadata.json version
+        run: |
+          jq --arg v "${{ steps.version.outputs.version }}" '.version = $v' metadata.json > metadata.tmp
+          mv metadata.tmp metadata.json
+
+      - name: Build module
+        run: |
+          gem install puppet
+          puppet module build
+
+      - name: Publish to Puppet Forge
+        uses: barnumbirr/action-forge-publish@v1.1.1
+        with:
+          forge_token: ${{ secrets.PUPPET_FORGE_TOKEN }}
+          module_path: pkg/danfoster-sysfs-${{ steps.version.outputs.version }}.tar.gz
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: pkg/danfoster-sysfs-${{ steps.version.outputs.version }}.tar.gz
+          generate_release_notes: true
