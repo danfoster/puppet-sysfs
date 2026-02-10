@@ -14,7 +14,6 @@ describe 'sysfs' do
         'owner' => 'root',
         'group' => 'root',
         'mode'  => '0644',
-        'force' => true,
       )
     end
 
@@ -93,7 +92,7 @@ describe 'sysfs' do
         'source' => 'puppet:///modules/sysfs/sysfsutils.service',
         'owner'  => 'root',
         'group'  => 'root',
-        'mode'   => '0700',
+        'mode'   => '0444',
       )
     end
 

@@ -56,7 +56,6 @@ class sysfs (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    force   => true,
     require => Package['sysfsutils'],
   }
 
