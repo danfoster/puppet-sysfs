@@ -3,13 +3,50 @@
   "version": "0.2.0",
   "author": "danfoster",
   "summary": "A module for managing sysfs settings",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/danfoster/puppet-sysfs",
   "project_page": "https://github.com/danfoster/puppet-sysfs",
   "issues_url": "https://github.com/danfoster/puppet-sysfs/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
-    {"name":"puppetlabs-concat"}
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 4.0.0 < 10.0.0"
+    },
+    {
+      "name": "puppetlabs-concat",
+      "version_requirement": ">= 4.0.0 < 10.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": ["7", "8", "9"]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": ["7", "8"]
+    },
+    {
+      "operatingsystem": "AlmaLinux",
+      "operatingsystemrelease": ["8", "9"]
+    },
+    {
+      "operatingsystem": "Rocky",
+      "operatingsystemrelease": ["8", "9"]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": ["10", "11", "12"]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": ["20.04", "22.04", "24.04"]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 7.0.0 < 9.0.0"
+    }
   ]
 }
-
