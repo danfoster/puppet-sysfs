@@ -16,7 +16,9 @@
 # Copyright 2015 Dan Foster, unless otherwise noted.
 #
 class sysfs (
-  Optional[Hash] $settings = undef
+  Optional[Hash] $settings  = undef,
+  String $exec_mode         = '0700',
+  String $service_mode      = '0444',
 ) {
   package { 'sysfsutils':
     ensure => installed
@@ -27,14 +29,14 @@ class sysfs (
       source => 'puppet:///modules/sysfs/sysfs-reload',
       owner  => root,
       group  => root,
-      mode   => '0700',
+      mode   => $exec_mode,
       before => File['/etc/systemd/system/sysfsutils.service']
     }
     file { '/etc/systemd/system/sysfsutils.service' :
       source => 'puppet:///modules/sysfs/sysfsutils.service',
       owner  => root,
       group  => root,
-      mode   => '0700',
+      mode   => $service_mode,
       before => Service['sysfsutils'],
     }
     exec { 'sysfsutils_reload_rhel':
