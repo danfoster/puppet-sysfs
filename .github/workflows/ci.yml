@@ -14,12 +14,15 @@ jobs:
       matrix:
         ruby: ["3.1", "3.2", "3.3"]
         puppet: ["~> 7.0", "~> 8.0"]
+        concat: ["4.2.1", "v7.0.0", "v9.0.2"]
         exclude:
           - ruby: "3.3"
             puppet: "~> 7.0"
 
     env:
       PUPPET_VERSION: ${{ matrix.puppet }}
+
+    name: "Ruby ${{ matrix.ruby }} / Puppet ${{ matrix.puppet }} / Concat ${{ matrix.concat }}"
 
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +32,9 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+
+      - name: Set concat version
+        run: sed -i 's/ref: v9.0.2/ref: ${{ matrix.concat }}/' .fixtures.yml
 
       - name: Run tests
         run: bundle exec rake spec
